@@ -12,6 +12,7 @@ import { SecondPage } from './components/secondPage/secondPage'
 import { ThirdPage } from './components/thirdPage/thirdPage'
 import { FourthPage } from './components/fourthPage/fourthPage'
 import { AreYouSure } from './components/fourthPage/areYouSure/areYouSure'
+import { FifthPage } from './components/fifthPage/fifthPage'
 
 import './App.css'
 
@@ -36,7 +37,7 @@ const Loading = () => {
 
 function App(props) {
   const { stepNext, stepPrevious, toggleNotBirthday, simpleReducer: { step, totalSteps, notBirthday } } = props
-  console.log({notBirthday})
+
   return (
     <div className="App">
       <ResetStyles />
@@ -45,7 +46,7 @@ function App(props) {
           <div className='progressBarContainer'>
             { 
               contains(step, STEPS_WITH_PROGRESS_BAR) &&
-              <Progress percent={((step-1) / totalSteps) * 100} />
+              <Progress percent={((step) / totalSteps) * 100} />
             }
           </div>
 
@@ -69,11 +70,25 @@ function App(props) {
               />
             }
             {
-              step === 3 && 
+              step === 3 && !notBirthday &&
               <FourthPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
                 setNotBirthday={toggleNotBirthday}
+              />
+            }
+            {
+              step === 3 && notBirthday &&
+              <AreYouSure 
+                stepNext={stepNext}
+                stepPrevious={stepPrevious}
+              />
+            }
+            {
+              step === 4 && 
+              <FifthPage 
+                stepNext={stepNext}
+                stepPrevious={stepPrevious}
               />
             }
           </div>

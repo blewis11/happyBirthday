@@ -28,8 +28,8 @@ const ThirdPage =
 
   return (
     <div>
-      <div className="welcome">Prove it..</div>
-      <div className="welcome">What's your cats name?</div>
+      <div className="welcome">Security Question:</div>
+      <div className="welcome">What's your sons name?</div>
       <div className="questionContainer">
         <TextField onChange={onChangeAnswer}/>
         <div className="submitButton">

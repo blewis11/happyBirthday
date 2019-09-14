@@ -13,11 +13,11 @@ const AreYouSure =
 
   return (
     <div>
-        <div>Ok well does it feel like your birthday?</div>
+        <div className='welcome'>Ok well does it FEEL like your birthday? 🤔</div>
         <div className='buttonsCenter'>
             <div className="buttonsContainer">
-              <Button onClick={stepPrevious} fullWidth={true}>No</Button>
               <Button onClick={stepNext} fullWidth={true}>Yes</Button>
+              <Button onClick={stepNext} fullWidth={true}>Always</Button>
             </div>
         </div>
     </div>

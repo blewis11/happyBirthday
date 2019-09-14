@@ -10,7 +10,6 @@ const FourthPage =
   withHandlers({
     gotoNotBirthday: ({setNotBirthday, stepNext}) => (event) => {
       setNotBirthday()
-      stepNext()
     },
     gotoBirthday: ({stepNext}) => (event) => {
       stepNext()
