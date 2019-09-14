@@ -23,6 +23,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         loading: action.loading
       }
     
+    case 'NOT_BIRTHDAY':
+      return {
+        ...state,
+        notBirthday: true
+      }
+    
     default:
     return state
   }

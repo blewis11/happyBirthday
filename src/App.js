@@ -5,11 +5,13 @@ import { createGlobalStyle, ThemeProvider } from "styled-components"
 import { reset, themes, Progress, Hourglass } from "react95"
 import { contains } from 'ramda'
 
-import { increaseStep, decreaseStep } from './actions/stepActions'
+import { increaseStep, decreaseStep, setNotBirthday } from './actions/stepActions'
 
 import { FirstPage } from './components/firstPage/firstPage'
 import { SecondPage } from './components/secondPage/secondPage'
 import { ThirdPage } from './components/thirdPage/thirdPage'
+import { FourthPage } from './components/fourthPage/fourthPage'
+import { AreYouSure } from './components/fourthPage/areYouSure/areYouSure'
 
 import './App.css'
 
@@ -33,8 +35,8 @@ const Loading = () => {
 }
 
 function App(props) {
-  const { stepNext, stepPrevious, simpleReducer: { step, totalSteps } } = props
-
+  const { stepNext, stepPrevious, toggleNotBirthday, simpleReducer: { step, totalSteps, notBirthday } } = props
+  console.log({notBirthday})
   return (
     <div className="App">
       <ResetStyles />
@@ -55,15 +57,23 @@ function App(props) {
             { 
               step === 1  &&
               <SecondPage 
-                stepNext={stepNext }
+                stepNext={stepNext}
                 stepPrevious={stepPrevious} 
               />
             }
             { 
               step === 2  &&
               <ThirdPage 
-                stepNext={stepNext } 
+                stepNext={stepNext} 
                 stepPrevious={stepPrevious}
+              />
+            }
+            {
+              step === 3 && 
+              <FourthPage 
+                stepNext={stepNext}
+                stepPrevious={stepPrevious}
+                setNotBirthday={toggleNotBirthday}
               />
             }
           </div>
@@ -80,7 +90,8 @@ export default compose(
     }),
     (dispatch) => ({
       stepNext: () => dispatch(increaseStep()),
-      stepPrevious: () => dispatch(decreaseStep())
+      stepPrevious: () => dispatch(decreaseStep()),
+      toggleNotBirthday: () => dispatch(setNotBirthday())
     })
   ),
   branch(

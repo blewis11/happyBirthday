@@ -19,3 +19,10 @@ export const toggleLoading = () => dispatch => {
     loading: true
   })
 }
+
+export const setNotBirthday = () => dispatch => {
+  dispatch({
+    type: 'NOT_BIRTHDAY',
+    payload: null
+  })
+}

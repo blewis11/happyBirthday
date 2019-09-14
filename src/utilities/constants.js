@@ -3,5 +3,6 @@ export const INITIAL_STATE = {
   totalSteps: 4,
   error: false,
   errorMessage: '',
-  loading: false
+  loading: false,
+  notBirthday: false
 }
