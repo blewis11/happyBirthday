@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import { createGlobalStyle, ThemeProvider } from "styled-components"
+import { reset, themes } from "react95"
 
-function App() {
+import { increaseStep, decreaseStep } from './actions/stepActions'
+
+import { FirstPage } from './components/firstPage/firstPage'
+import { SecondPage } from './components/secondPage/secondPage'
+import { ThirdPage } from './components/thirdPage/thirdPage'
+
+import './App.css'
+
+const ResetStyles = createGlobalStyle`
+  ${reset}
+`;
+
+function App(props) {
+  const { stepNext, stepPrevious, simpleReducer: { step } } = props
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ResetStyles />
+      <ThemeProvider theme={themes.default}>
+          <div className="introSequenceContainer">
+            { step === 0  &&
+              <FirstPage stepNext={stepNext}/>
+            }
+            { step === 1  &&
+              <SecondPage stepNext={stepNext } stepPrevious={stepPrevious} />
+            }
+            { step === 2  &&
+              <ThirdPage stepNext={stepNext } stepPrevious={stepPrevious} />
+            }
+          </div>
+      </ThemeProvider>
     </div>
   );
 }
 
-export default App;
+export default compose(
+  connect(
+    (state) => ({
+      ...state
+    }),
+    (dispatch) => ({
+      stepNext: () => dispatch(increaseStep()),
+      stepPrevious: () => dispatch(decreaseStep())
+    })
+  )
+)(App)
