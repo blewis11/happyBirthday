@@ -10,13 +10,13 @@ const FifthPage =
    
 )((props) => {
   const { stepNext, stepPrevious } = props
-
+ 
   return (
     <div>
         <div className="welcome">Happy Birthday!!</div>
         <div>I made this little site for you, I hope you like it :)</div>
         <div className="buttonContainer">
-          <Button>Go</Button>
+          <Button > 🎂 Go 🎂</Button>
         </div>
     </div>
   )
