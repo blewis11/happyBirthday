@@ -10,9 +10,11 @@ const SecondPage = (props) => {
   return (
     <div>
       <div className="welcome">Are You Lisis?</div>
-      <div className="buttonsContainer">
-        <Button onClick={stepPrevious} fullWidth={true}>No</Button>
-        <Button onClick={stepNext} fullWidth={true}>Yes</Button>
+      <div className='buttonsCenter'>
+        <div className="buttonsContainer">
+          <Button onClick={stepPrevious} fullWidth={true}>No</Button>
+          <Button onClick={stepNext} fullWidth={true}>Yes</Button>
+        </div>
       </div>
     </div>
   )

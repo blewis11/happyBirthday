@@ -11,3 +11,11 @@ dispatch({
   payload: null
 })
 }
+
+export const toggleLoading = () => dispatch => {
+  console.log('dispatching')
+  dispatch({
+    type: 'TOGGLE_LOADING',
+    loading: true
+  })
+}
