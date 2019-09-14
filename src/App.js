@@ -24,7 +24,7 @@ const ResetStyles = createGlobalStyle`
 
 const Loading = () => {
   return (
-    <div className="loader">
+    <div className="App">
       <ResetStyles />
       <ThemeProvider theme={themes.default}>
         <div className="hourglassContainer">
@@ -35,8 +35,32 @@ const Loading = () => {
   )
 }
 
+const Error = (props) => {
+  const { errorMessage } = props
+
+  return (
+    <div className="App">
+      <ResetStyles />
+      <ThemeProvider theme={themes.default}>
+        <div>{errorMessage}</div>
+      </ThemeProvider>
+    </div>
+  )
+}
+
 function App(props) {
-  const { stepNext, stepPrevious, toggleNotBirthday, simpleReducer: { step, totalSteps, notBirthday } } = props
+  const { 
+    stepNext, 
+    stepPrevious, 
+    toggleNotBirthday, 
+    simpleReducer: { 
+      step, 
+      totalSteps, 
+      notBirthday, 
+      error,
+      errorMessage 
+    }
+  } = props
 
   return (
     <div className="App">
@@ -51,26 +75,30 @@ function App(props) {
           </div>
 
           <div className="introSequenceContainer">
+            {
+              error && 
+              <Error errorMessage={errorMessage} />
+            }
             { 
-              step === 0  &&
+              step === 0  && !error &&
               <FirstPage stepNext={stepNext}/>
             }
             { 
-              step === 1  &&
+              step === 1  && !error &&
               <SecondPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious} 
               />
             }
             { 
-              step === 2  &&
+              step === 2  && !error &&
               <ThirdPage 
                 stepNext={stepNext} 
                 stepPrevious={stepPrevious}
               />
             }
             {
-              step === 3 && !notBirthday &&
+              step === 3 && !notBirthday && !error &&
               <FourthPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
@@ -78,14 +106,14 @@ function App(props) {
               />
             }
             {
-              step === 3 && notBirthday &&
+              step === 3 && notBirthday && !error &&
               <AreYouSure 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
               />
             }
             {
-              step === 4 && 
+              step === 4 && !error &&
               <FifthPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
