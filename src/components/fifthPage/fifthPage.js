@@ -13,7 +13,7 @@ const FifthPage =
       setTimeout(function () {
         stepNext()
         setLoading(false)
-      }, 1500)
+      }, 2000)
     }
   })
 )((props) => {

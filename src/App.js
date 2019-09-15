@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { compose, branch, renderComponent } from 'recompose'
+import { compose } from 'recompose'
 import { createGlobalStyle, ThemeProvider } from "styled-components"
 import { reset, themes, Progress, Hourglass, Button } from "react95"
 import { contains } from 'ramda'
@@ -34,21 +34,16 @@ const ResetStyles = createGlobalStyle`
 `
 
 const Loading = (props) => {
-  const { loadingPanda  } = props
+  const { loadingPanda } = props
 
   return (
-    <div className="App">
-      <ResetStyles />
-      <ThemeProvider theme={themes.default}>
-        <div className="hourglassContainer">
-          { !loadingPanda && 
-            <Hourglass size={32}/>
-          }
-          { loadingPanda && 
-            <img width='100px' height='100px' src={panda}/>
-          }
-        </div>
-      </ThemeProvider>
+    <div className="hourglassContainer">
+      { !loadingPanda && 
+        <Hourglass size={32}/>
+      }
+      { loadingPanda && 
+        <img width='100px' height='100px' src={panda}/>
+      }
     </div>
   )
 }
@@ -77,46 +72,53 @@ function App(props) {
     setLoading,
     loadPanda,
     createError,
-    gotoStep,
+    gotoStep, 
     simpleReducer: { 
       step, 
       totalSteps, 
       notBirthday, 
       error,
-      errorMessage
+      errorMessage,
+      loadingPanda,
+      loading
     }
   } = props
 
+  const backgroundcolor = (step != 5 ? '#008081' : '#8E7C93')
+
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: backgroundcolor}}>
       <ResetStyles />
       <ThemeProvider theme={themes.default}>
-        <div>
-          <div className='progressBarContainer'>
+        <div className="fullScreen">
             { 
               contains(step, STEPS_WITH_PROGRESS_BAR) &&
-              <Progress percent={((step) / totalSteps) * 100} />
+              <div className='progressBarContainer'>
+                <Progress percent={((step) / totalSteps) * 100} />
+              </div>
             }
-          </div>
-
           <div className="introSequenceContainer">
             {
-              error && 
+              error && !loading &&
               <Error 
                 errorMessage={errorMessage}
                 gotoStep={gotoStep}
                 createError={createError}
               />
             }
+            {
+              loading && !error &&
+              <Loading loadingPanda={loadingPanda} />
+            }
             { 
-              step === 0  && !error &&
+              step === 0  && !error && !loading &&
               <FirstPage 
                 stepNext={stepNext}
                 setLoading={setLoading}
               />
             }
             { 
-              step === 1  && !error &&
+              step === 1  && !error && !loading &&
               <SecondPage 
                 stepNext={stepNext}
                 setLoading={setLoading}
@@ -124,7 +126,7 @@ function App(props) {
               />
             }
             { 
-              step === 2  && !error &&
+              step === 2  && !error && !loading &&
               <ThirdPage 
                 stepNext={stepNext} 
                 stepPrevious={stepPrevious}
@@ -133,7 +135,7 @@ function App(props) {
               />
             }
             {
-              step === 3 && !notBirthday && !error &&
+              step === 3 && !notBirthday && !error && !loading &&
               <FourthPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
@@ -143,7 +145,7 @@ function App(props) {
               />
             }
             {
-              step === 3 && notBirthday && !error &&
+              step === 3 && notBirthday && !error && !loading &&
               <AreYouSure 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
@@ -152,17 +154,19 @@ function App(props) {
               />
             }
             {
-              step === 4 && !error &&
+              step === 4 && !error && !loading &&
               <FifthPage 
                 stepNext={stepNext}
                 setLoading={setLoading}
               />
             }
-            {
-              step === 5 && !error &&
-              <MainPage />
-            }
           </div>
+          {
+            step === 5 && !error && !loading &&
+              <div className="mainPageContainer">
+                  <MainPage />
+              </div>
+          }
         </div>
       </ThemeProvider>
     </div>
@@ -183,9 +187,5 @@ export default compose(
       createError: (isError, errorMessage) => dispatch(setError(isError, errorMessage)),
       gotoStep: (step) => dispatch(stepTo(step))
     })
-  ),
-  branch(
-    ({simpleReducer: {loading}}) => loading,
-    renderComponent(({simpleReducer: { loadingPanda }}) => <Loading loadingPanda={loadingPanda} />)
   )
 )(App)

@@ -4,10 +4,10 @@ import rootReducer from './reducers/rootReducer'
 
 import { INITIAL_STATE } from './utilities/constants'
 
-export default function configureStore(initialState=INITIAL_STATE) {
+export default function configureStore(persistedState=INITIAL_STATE) {
  return createStore(
    rootReducer,
-   initialState,
+   persistedState,
    applyMiddleware(thunk)
  );
 }

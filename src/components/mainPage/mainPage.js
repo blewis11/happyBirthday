@@ -2,12 +2,14 @@
 import React from 'react'
 import { compose } from 'recompose'
 
+import './style.css'
+
 const MainPage = compose(
   
 )((props) => {
 
   return (
-    <div>
+    <div className="mainPageContainer">
       Main Page TODO
     </div>
   )

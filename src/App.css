@@ -19,7 +19,13 @@ body * {
   top: 0; 
   left: 0;
   font-family: 'ms_sans_serifregular';
-  background-color: #008081;
+  transition: background-color .3s linear;
+  overflow: hidden;
+}
+
+.fullScreen {
+  height: 100%;
+  width: 100%;
 }
 
 .introSequenceContainer {
