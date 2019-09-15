@@ -1,5 +1,9 @@
 @import './fonts/webfontkit-20190914-061210/stylesheet.css';
 
+body * {
+  cursor: url("./cursor/Original Arrow Windows 95.cur"), auto;
+}
+
 .hourglassContainer {
   text-align: center;
   position: absolute;
@@ -15,7 +19,7 @@
   top: 0; 
   left: 0;
   font-family: 'ms_sans_serifregular';
-  background-color: #008081
+  background-color: #008081;
 }
 
 .introSequenceContainer {

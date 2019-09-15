@@ -23,6 +23,7 @@ import { ThirdPage } from './components/thirdPage/thirdPage'
 import { FourthPage } from './components/fourthPage/fourthPage'
 import { AreYouSure } from './components/fourthPage/areYouSure/areYouSure'
 import { FifthPage } from './components/fifthPage/fifthPage'
+import { MainPage } from './components/mainPage/mainPage'
 
 import './App.css'
 
@@ -82,7 +83,7 @@ function App(props) {
       totalSteps, 
       notBirthday, 
       error,
-      errorMessage,
+      errorMessage
     }
   } = props
 
@@ -154,9 +155,12 @@ function App(props) {
               step === 4 && !error &&
               <FifthPage 
                 stepNext={stepNext}
-                stepPrevious={stepPrevious}
                 setLoading={setLoading}
               />
+            }
+            {
+              step === 5 && !error &&
+              <MainPage />
             }
           </div>
         </div>

@@ -5,5 +5,5 @@ export const INITIAL_STATE = {
   errorMessage: '',
   loading: false,
   notBirthday: false,
-  loadingPanda: false
+  loadingPanda: false,
 }

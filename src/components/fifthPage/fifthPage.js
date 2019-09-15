@@ -1,5 +1,5 @@
 import React from 'react'
-import { compose } from 'recompose'
+import { compose, withHandlers } from 'recompose'
 
 import { Button } from 'react95'
 
@@ -7,16 +7,24 @@ import './style.css'
 
 const FifthPage =
   compose(
-   
+  withHandlers({
+    gotoNext: ({stepNext, setLoading}) => {
+      setLoading(true)
+      setTimeout(function () {
+        stepNext()
+        setLoading(false)
+      }, 1500)
+    }
+  })
 )((props) => {
-  const { stepNext, stepPrevious } = props
+  const { gotoNext } = props
  
   return (
     <div>
         <div className="welcome">Happy Birthday!!</div>
         <div>I made this little site for you, I hope you like it :)</div>
         <div className="buttonContainer">
-          <Button > 🎂 Go 🎂</Button>
+          <Button onClick={gotoNext}> 🎂 Go 🎂</Button>
         </div>
     </div>
   )
