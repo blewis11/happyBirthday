@@ -8,15 +8,24 @@ import './style.css'
 const FourthPage =
   compose(
   withHandlers({
-    gotoNotBirthday: ({setNotBirthday, stepNext}) => (event) => {
-      setNotBirthday()
+    gotoNotBirthday: ({setNotBirthday, setLoading}) => (event) => {
+      setLoading(true)
+      setTimeout(function () {
+        setNotBirthday()
+        setLoading(false)
+      }, 1500)
     },
-    gotoBirthday: ({stepNext}) => (event) => {
-      stepNext()
+    gotoBirthday: ({stepNext, loadPanda, setLoading }) => (event) => {
+      loadPanda(true)
+      setLoading(true)
+      setTimeout(function () {
+        stepNext()
+        setLoading(false)
+      }, 2000)
     }
   })
 )((props) => {
-  const { stepNext, gotoNotBirthday } = props
+  const { gotoBirthday, gotoNotBirthday } = props
 
   return (
     <div>
@@ -25,7 +34,7 @@ const FourthPage =
           <div className='buttonsCenter'>
             <div className="buttonsContainer">
               <Button onClick={gotoNotBirthday} fullWidth={true}>No</Button>
-              <Button onClick={stepNext} fullWidth={true}>Yes</Button>
+              <Button onClick={gotoBirthday} fullWidth={true}>Yes</Button>
             </div>
         </div>
     </div>

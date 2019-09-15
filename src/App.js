@@ -2,10 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose, branch, renderComponent } from 'recompose'
 import { createGlobalStyle, ThemeProvider } from "styled-components"
-import { reset, themes, Progress, Hourglass } from "react95"
+import { reset, themes, Progress, Hourglass, Button } from "react95"
 import { contains } from 'ramda'
 
-import { increaseStep, decreaseStep, setNotBirthday } from './actions/stepActions'
+import panda from './media/panda.gif'
+
+import { 
+  increaseStep, 
+  decreaseStep, 
+  setNotBirthday, 
+  toggleLoading,
+  setLoadingPanda,
+  setError,
+  stepTo
+} from './actions/stepActions'
 
 import { FirstPage } from './components/firstPage/firstPage'
 import { SecondPage } from './components/secondPage/secondPage'
@@ -22,13 +32,20 @@ const ResetStyles = createGlobalStyle`
   ${reset}
 `
 
-const Loading = () => {
+const Loading = (props) => {
+  const { loadingPanda  } = props
+
   return (
     <div className="App">
       <ResetStyles />
       <ThemeProvider theme={themes.default}>
         <div className="hourglassContainer">
-          <Hourglass size={32}/>
+          { !loadingPanda && 
+            <Hourglass size={32}/>
+          }
+          { loadingPanda && 
+            <img width='100px' height='100px' src={panda}/>
+          }
         </div>
       </ThemeProvider>
     </div>
@@ -36,14 +53,17 @@ const Loading = () => {
 }
 
 const Error = (props) => {
-  const { errorMessage } = props
+  const { errorMessage, gotoStep, createError } = props
+  
+  const onClick = () => {
+    gotoStep(0)
+    createError(false, '')
+  }
 
   return (
-    <div className="App">
-      <ResetStyles />
-      <ThemeProvider theme={themes.default}>
-        <div>{errorMessage}</div>
-      </ThemeProvider>
+    <div>
+      <div className="welcome">{errorMessage}</div>
+      <Button onClick={onClick}>Go Back</Button>
     </div>
   )
 }
@@ -53,12 +73,16 @@ function App(props) {
     stepNext, 
     stepPrevious, 
     toggleNotBirthday, 
+    setLoading,
+    loadPanda,
+    createError,
+    gotoStep,
     simpleReducer: { 
       step, 
       totalSteps, 
       notBirthday, 
       error,
-      errorMessage 
+      errorMessage,
     }
   } = props
 
@@ -77,17 +101,25 @@ function App(props) {
           <div className="introSequenceContainer">
             {
               error && 
-              <Error errorMessage={errorMessage} />
+              <Error 
+                errorMessage={errorMessage}
+                gotoStep={gotoStep}
+                createError={createError}
+              />
             }
             { 
               step === 0  && !error &&
-              <FirstPage stepNext={stepNext}/>
+              <FirstPage 
+                stepNext={stepNext}
+                setLoading={setLoading}
+              />
             }
             { 
               step === 1  && !error &&
               <SecondPage 
                 stepNext={stepNext}
-                stepPrevious={stepPrevious} 
+                setLoading={setLoading}
+                createError={createError}
               />
             }
             { 
@@ -95,6 +127,8 @@ function App(props) {
               <ThirdPage 
                 stepNext={stepNext} 
                 stepPrevious={stepPrevious}
+                setLoading={setLoading}
+                createError={createError}
               />
             }
             {
@@ -103,6 +137,8 @@ function App(props) {
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
                 setNotBirthday={toggleNotBirthday}
+                setLoading={setLoading}
+                loadPanda={loadPanda}
               />
             }
             {
@@ -110,6 +146,8 @@ function App(props) {
               <AreYouSure 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
+                setLoading={setLoading}
+                loadPanda={loadPanda}
               />
             }
             {
@@ -117,6 +155,7 @@ function App(props) {
               <FifthPage 
                 stepNext={stepNext}
                 stepPrevious={stepPrevious}
+                setLoading={setLoading}
               />
             }
           </div>
@@ -134,11 +173,15 @@ export default compose(
     (dispatch) => ({
       stepNext: () => dispatch(increaseStep()),
       stepPrevious: () => dispatch(decreaseStep()),
-      toggleNotBirthday: () => dispatch(setNotBirthday())
+      toggleNotBirthday: () => dispatch(setNotBirthday()),
+      setLoading: (loading) => dispatch(toggleLoading(loading)),
+      loadPanda: (showPanda) => dispatch(setLoadingPanda(showPanda)),
+      createError: (isError, errorMessage) => dispatch(setError(isError, errorMessage)),
+      gotoStep: (step) => dispatch(stepTo(step))
     })
   ),
   branch(
     ({simpleReducer: {loading}}) => loading,
-    renderComponent(Loading)
+    renderComponent(({simpleReducer: { loadingPanda }}) => <Loading loadingPanda={loadingPanda} />)
   )
 )(App)

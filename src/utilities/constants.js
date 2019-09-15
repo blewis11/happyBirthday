@@ -4,5 +4,6 @@ export const INITIAL_STATE = {
   error: false,
   errorMessage: '',
   loading: false,
-  notBirthday: false
+  notBirthday: false,
+  loadingPanda: false
 }

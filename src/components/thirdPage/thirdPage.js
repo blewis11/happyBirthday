@@ -15,11 +15,18 @@ const ThirdPage =
       const input = event.target.value
       setAnswer(input)
     },
-    submitAnswer: ({answer, stepNext, stepPrevious}) => (event) => {
+    submitAnswer: ({answer, stepNext, setLoading, createError}) => (event) => {
+      setLoading(true)
       if (answer.toLowerCase() === CORRECT_ANSWER){
-        stepNext()
+        setTimeout(function () {
+          stepNext()
+          setLoading(false)
+        }, 1500)
       } else {
-        stepPrevious()
+        setTimeout(function () {
+          createError(true, '❌ Wrong! You must not be Lisis..')
+          setLoading(false)
+        }, 1500)
       }
     }
   }),

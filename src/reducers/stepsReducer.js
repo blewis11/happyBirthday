@@ -1,7 +1,8 @@
 import { INITIAL_STATE } from '../utilities/constants'
 
 const reducer = (state = INITIAL_STATE, action) => {
-  const { step, } = state
+  const { step } = state
+  const { payload } = action
 
   switch (action.type) {
    case 'INCREASE_STEP':    
@@ -16,11 +17,16 @@ const reducer = (state = INITIAL_STATE, action) => {
         step: step - 1
       }
     
-    case 'TOGGLE_LOADING':
-      console.log('receiving')
+    case 'STEP_TO':
       return {
         ...state,
-        loading: action.loading
+        step: payload
+      }
+
+    case 'TOGGLE_LOADING':
+      return {
+        ...state,
+        loading: payload
       }
     
     case 'NOT_BIRTHDAY':
@@ -29,6 +35,18 @@ const reducer = (state = INITIAL_STATE, action) => {
         notBirthday: true
       }
     
+    case 'LOADING_PANDA':
+      return {
+        ...state,
+        loadingPanda: payload
+      }
+    
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: payload.isError,
+        errorMessage: payload.errorMessage
+      }
     default:
     return state
   }
