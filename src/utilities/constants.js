@@ -1,5 +1,5 @@
 export const INITIAL_STATE = {
-  step: 0,
+  step: 5,
   totalSteps: 4,
   error: false,
   errorMessage: '',
